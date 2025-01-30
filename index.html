@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart City Issue Reporting</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+      <h1>Login</h1>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="register-page" class="page" style="display: none;">
+      <h1>Register</h1>
+      <form id="register-form">
+        <input type="text" id="register-name" placeholder="Full Name" required>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="#" id="go-to-login">Login here</a></p>
+    </div>
+
+<!-- Reporting Page -->
+<div id="reporting-page" class="page" style="display: none;">
+    <h1>Report an Issue</h1>
+    <form id="report-form">
+      <select id="issue-type" required>
+        <option value="">Select Issue Type</option>
+        <option value="pothole">Pothole</option>
+        <option value="illegal-dumping">Illegal Dumping</option>
+        <option value="street-light-outage">Street Light Outage</option>
+        <option value="Others">Others</option>
+      </select>
+      <textarea id="issue-description" placeholder="Describe the issue..." required></textarea>
+      <input type="file" id="issue-image" accept="image/*" required>
+      <button type="submit">Submit Report</button>
+    </form>
+    <p><a href="#" id="logout">Logout</a></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
