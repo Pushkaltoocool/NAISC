@@ -32,19 +32,17 @@ body {
   width: 100%;
   max-width: 1200px;
   display: flex;
-  flex-direction: column; /* Stack pages vertically on smaller screens */
-  gap: 20px; /* Add spacing between elements */
+  justify-content: space-between;
 }
 
 .container {
   flex: 1;
   max-width: 400px;
-  margin: 0 auto; /* Center container horizontally */
 }
 
 .page {
   background-color: var(--card-background);
-  padding: 1.5rem; /* Reduced padding for smaller screens */
+  padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -61,8 +59,8 @@ body {
 }
 
 h1 {
-  font-size: 1.75rem; /* Reduced font size for smaller screens */
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
   color: var(--primary-color);
   text-align: center;
 }
@@ -154,7 +152,6 @@ a:hover {
   background-color: #e0e0e0;
 }
 
-/* Chatbot Styles */
 #chatbot-container {
   position: fixed;
   right: 20px;
@@ -179,7 +176,7 @@ a:hover {
 }
 
 .chatbot-frame.open {
-  height: 430px;
+  height: 430px; /* Adjust height for desktop */
 }
 
 .chatbot-frame iframe {
@@ -190,18 +187,13 @@ a:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
-  body {
-    padding: 10px; /* Reduce padding for smaller screens */
+  #app {
+    flex-direction: column;
   }
 
-  h1 {
-    font-size: 1.5rem; /* Further reduce font size */
-  }
-
-  .page {
-    padding: 1rem; /* Reduce padding further */
+  .container {
+    max-width: 100%;
   }
 
   #chatbot-container {
@@ -209,40 +201,5 @@ a:hover {
     width: 100%;
     margin-top: 20px;
   }
-
-  #chatbot-container .chatbot-toggle {
-    border-radius: 8px 8px 0 0;
-    text-align: center;
-  }
-
-  #chatbot-container .chatbot-frame.open {
-    height: 350px; /* Adjust chatbot height for smaller screens */
-  }
 }
 
-@media (max-width: 480px) {
-  body {
-    padding: 5px; /* Minimal padding for very small screens */
-  }
-
-  h1 {
-    font-size: 1.25rem; /* Smallest font size */
-  }
-
-  form {
-    gap: 0.75rem; /* Reduce spacing between form elements */
-  }
-
-  button {
-    padding: 0.5rem; /* Reduce button padding */
-  }
-
-  #chatbot-container {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  #chatbot-container .chatbot-frame.open {
-    height: 300px; /* Further adjust chatbot height */
-  }
-}
