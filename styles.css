@@ -1,205 +1,823 @@
-:root {
-  --primary-color: #00a2ed;
-  --primary-dark: #0077b5;
-  --background-color: #f0f5ff;
-  --text-color: #333333;
-  --error-color: #e74c3c;
-  --success-color: #2ecc71;
-  --card-background: #ffffff;
-  --gradient-start: #00a2ed;
-  --gradient-end: #b50c00;
+/* styles.css */
+
+/* ---------------------------------- */
+/* Reset & General Styles           */
+/* ---------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-* {
-  box-sizing: border-box;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.5;
+  color: #24292e; /* GitHub text color */
+  background-color: #f0f2f5; /* Light gray background like GitHub */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page {
+  padding: 20px;
+  max-width: 960px; /* Limit page width for readability */
+  margin: 20px auto; /* Center page on larger screens */
+  background-color: #fff; /* White page background */
+  border-radius: 8px; /* Rounded corners for pages/boxes */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #d1d5da; /* Light border for dividers */
+  margin: 1.5rem 0;
+}
+
+a {
+  color: #0969da; /* GitHub blue link color */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #044289; /* Darker blue on hover */
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+.error-message {
+  color: #d73a49; /* GitHub error color */
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* ---------------------------------- */
+/* Navigation Bar                   */
+/* ---------------------------------- */
+#navbar {
+  background-color: #f0f2f5; /* Match body background */
+  border-bottom: 1px solid #d1d5da;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between; /* Space out nav items if needed later */
+  align-items: center;
+}
+
+#navbar ul {
+  display: flex;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-  color: var(--text-color);
-  line-height: 1.6;
-  min-height: 100vh;
+#navbar li {
+  margin-right: 20px; /* Spacing between nav links */
+  margin-bottom: 0; /* Override general li margin-bottom */
+}
+
+#navbar li:last-child {
+  margin-right: 0;
+}
+
+#navbar a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #24292e;
+  font-weight: 500;
+}
+
+#navbar a:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover background */
+  text-decoration: none;
+}
+
+/* ---------------------------------- */
+/* Landing Page                     */
+/* ---------------------------------- */
+#landing-page {
+  padding: 0; /* Remove default page padding for full-width sections */
+  margin: 0; /* Remove default page margin */
+  max-width: 100%; /* Full width */
+  border-radius: 0; /* No rounded corners for landing page */
+  box-shadow: none; /* No shadow for landing page */
+}
+
+/* Hero Section */
+#hero-section {
+  background-color: #e6f3ff; /* Very light blue for hero background */
+  padding: 60px 20px;
+  text-align: center;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
 }
 
-#app {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.container {
-  flex: 1;
-  max-width: 400px;
-}
-
-.page {
-  background-color: var(--card-background);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (min-width: 768px) {
+  #hero-section {
+    flex-direction: row; /* Stack side-by-side on larger screens */
+    text-align: left;
+    padding: 80px 40px;
+    justify-content: space-between;
   }
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
+.hero-content {
+  flex: 1;
+  padding-right: 20px; /* Spacing between content and image */
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content .hero-tagline {
+  font-size: 1.2rem;
+  color: #586069; /* Muted text color for tagline */
+  margin-bottom: 2rem;
+}
+
+.hero-buttons .button {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  margin-right: 10px;
+  transition: transform 0.2s ease;
+}
+
+.hero-buttons .button:last-child {
+  margin-right: 0;
+}
+
+.hero-buttons .button:hover {
+  transform: scale(1.05); /* Slight scale up on hover */
+}
+
+.hero-buttons .primary-button {
+  background-color: #2ea44f; /* GitHub success button color */
+  color: white;
+}
+
+.hero-buttons .secondary-button {
+  background-color: transparent;
+  color: #0969da; /* GitHub blue link color */
+  border: 1px solid #0969da;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 400px;
+  margin-top: 20px; /* Space from content on smaller screens */
+}
+
+@media (min-width: 768px) {
+  .hero-image {
+    margin-top: 0; /* Reset margin on larger screens */
+  }
+}
+
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Remove bottom spacing in some browsers */
+}
+
+
+/* Features Section */
+#features-section {
+  padding: 60px 20px;
   text-align: center;
 }
 
-form {
+#features-section h2 {
+  margin-bottom: 3rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column on small screens */
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+  }
+}
+
+@media (min-width: 992px) {
+  .features-grid {
+    grid-template-columns: repeat(4, 1fr); /* Four columns on large screens */
+  }
+}
+
+
+.feature-item {
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.feature-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  color: #0969da; /* Feature icon color - GitHub blue */
+}
+
+.feature-item h3 {
+  margin-bottom: 0.8rem;
+}
+
+.feature-item p {
+  color: #586069; /* Muted text color for feature description */
+}
+
+
+/* CTA Section (Call to Action) */
+#cta-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9f9; /* Light gray background for CTA section */
+}
+
+#cta-section h2 {
+  margin-bottom: 1rem;
+}
+
+#cta-section p {
+  font-size: 1.1rem;
+  color: #586069; /* Muted text color */
+  margin-bottom: 2rem;
+}
+
+.cta-buttons .button {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  margin-right: 10px;
+  transition: transform 0.2s ease;
+}
+
+.cta-buttons .button:last-child {
+  margin-right: 0;
+}
+
+.cta-buttons .button:hover {
+  transform: scale(1.05); /* Slight scale up on hover */
+}
+
+.cta-buttons .primary-button {
+  background-color: #0969da; /* GitHub blue button color */
+  color: white;
+}
+
+.cta-buttons .secondary-button {
+  background-color: transparent;
+  color: #2ea44f; /* GitHub success button color */
+  border: 1px solid #2ea44f;
+}
+
+
+/* ---------------------------------- */
+/* Login & Register Pages            */
+/* ... (rest of Login & Register CSS from previous code - unchanged) ... */
+#login-page,
+#register-page {
+  max-width: 400px;
+  padding: 30px;
+  text-align: center;
+}
+
+#login-page h1,
+#register-page h1 {
+  margin-bottom: 1.5rem;
+}
+
+#login-form,
+#register-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+#login-form input,
+#register-form input {
+  margin-bottom: 1rem;
+  padding: 10px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
   font-size: 1rem;
-  transition: all 0.3s ease;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 162, 237, 0.1);
-}
-
-button {
-  background-color: var(--primary-color);
-  color: white;
+#login-form button,
+#register-form button {
+  padding: 10px 20px;
   border: none;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  background-color: #2ea44f; /* GitHub success button color */
+  color: white;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+#login-form button:hover,
+#register-form button:hover {
+  background-color: #22863a; /* Darker green on hover */
 }
 
-a {
-  color: var(--primary-color);
+#login-page p,
+#register-page p {
+  margin-top: 1.5rem;
+}
+
+
+/* ---------------------------------- */
+/* Admin Dashboard Page             */
+/* ... (rest of Admin Dashboard CSS from previous code - unchanged) ... */
+#admin-page {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-container {
+  width: 100%;
+  max-width: 800px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-summary h2, .admin-reports h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#admin-reports-container {
+  padding: 0;
+  list-style: none;
+}
+
+#admin-reports-container li {
+  padding: 20px;
+  border: 1px solid #d1d5da;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+#admin-reports-container li:last-child {
+  margin-bottom: 0;
+}
+
+#admin-reports-container li p {
+  margin-bottom: 0.5rem;
+}
+
+.status-update {
+  padding: 8px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.update-status-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0969da;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.update-status-btn:hover {
+  background-color: #044289;
+}
+
+.admin-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.admin-actions .button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-actions .button.secondary-button {
+  background-color: #f4a261;
+  color: white;
+}
+
+.admin-actions .button.secondary-button:hover {
+  background-color: #e76f51;
+}
+
+.admin-logout {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.admin-logout .danger-button {
+  background-color: #d9534f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
   text-decoration: none;
-  transition: color 0.3s ease;
 }
 
-a:hover {
-  color: var(--primary-dark);
+.admin-logout .danger-button:hover {
+  background-color: #c9302c;
 }
 
-.error-message {
-  color: var(--error-color);
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
+.report-status {
+  font-weight: bold;
 }
 
-.file-input-wrapper {
+/* ---------------------------------- */
+/* User Reporting Page              */
+/* ... (rest of Reporting Page CSS from previous code - unchanged) ... */
+#reporting-page {
+  padding: 30px;
+}
+
+#report-form select,
+#report-form textarea,
+#report-form .file-input-wrapper input[type="file"] {
+  display: block; /* Ensure full width */
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 1rem;
+  appearance: none; /* Remove default OS styling for select */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+  background-color: #fff; /* Ensure background is white for select in some browsers */
+}
+
+#report-form textarea {
+  min-height: 150px; /* Make textarea taller */
+  resize: vertical; /* Allow vertical resizing */
+}
+
+#report-form .file-input-wrapper {
   position: relative;
   overflow: hidden;
   display: inline-block;
-  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
-.file-input-wrapper input[type="file"] {
+#report-form .file-input-wrapper input[type="file"] {
   position: absolute;
-  left: 0;
   top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
   opacity: 0;
+  outline: none;
+  cursor: inherit;
+  display: block;
+}
+
+#report-form .file-input-wrapper label {
+  padding: 10px 20px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  display: inline-block;
   cursor: pointer;
 }
 
-.file-input-wrapper label {
-  display: inline-block;
-  padding: 0.75rem 1rem;
-  background-color: #f0f0f0;
-  color: #333;
+#report-form button[type="submit"] {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2ea44f; /* GitHub success button color */
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#report-form button[type="submit"]:hover {
+  background-color: #22863a;
+}
+
+/* ---------------------------------- */
+/* My Reports Page                  */
+/* ... (rest of My Reports CSS from previous code - unchanged) ... */
+#my-reports-page {
+  padding: 30px;
+}
+
+#user-reports-container {
+  padding: 0;
+}
+
+#user-reports-container li {
+  padding: 20px;
+  border: 1px solid #d1d5da;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
 }
 
-.file-input-wrapper:hover label {
-  background-color: #e0e0e0;
+#user-reports-container li:last-child {
+  margin-bottom: 0;
 }
 
+#user-reports-container li p {
+  margin-bottom: 0.5rem;
+}
+
+
+/* ---------------------------------- */
+/* Community Forum Page             */
+/* ... (rest of Community Forum CSS from previous code - unchanged) ... */
+#community-forum-page {
+  padding: 30px;
+}
+
+#forum-posts {
+  margin-bottom: 2rem;
+}
+
+.forum-post {
+  padding: 20px;
+  border: 1px solid #d1d5da;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.forum-post:last-child {
+  margin-bottom: 0;
+}
+
+.forum-post h3 {
+  margin-bottom: 0.5rem;
+}
+
+.forum-post p {
+  margin-bottom: 1rem;
+}
+
+.forum-post span {
+  font-size: 0.9rem;
+  color: #6a737d; /* Muted gray color */
+}
+
+#new-post h2 {
+  margin-bottom: 1rem;
+}
+
+#forum-post-form input[type="text"],
+#forum-post-form textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+#forum-post-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+#forum-post-form button[type="submit"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0969da; /* GitHub blue button */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#forum-post-form button[type="submit"]:hover {
+  background-color: #044289;
+}
+
+/* ---------------------------------- */
+/* About & Contact Pages             */
+/* ... (rest of About & Contact CSS from previous code - unchanged) ... */
+#about-page,
+#contact-page {
+  padding: 30px;
+}
+
+
+/* ---------------------------------- */
+/* Chatbot Container                  */
+/* ... (rest of Chatbot CSS from previous code - unchanged) ... */
 #chatbot-container {
   position: fixed;
-  right: 20px;
   bottom: 20px;
-  width: 350px;
-  transition: all 0.3s ease;
+  right: 20px;
+  z-index: 1000; /* Ensure chatbot is on top */
 }
 
 .chatbot-toggle {
-  background-color: var(--primary-color);
+  background-color: #0969da; /* GitHub blue button */
   color: white;
-  padding: 10px 20px;
-  border-radius: 8px 8px 0 0;
+  padding: 12px 20px;
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
   cursor: pointer;
   text-align: center;
+  font-weight: 500;
 }
 
 .chatbot-frame {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.3s ease;
-}
-
-.chatbot-frame.open {
-  height: 430px; /* Adjust height for desktop */
+  display: none; /* Initially hidden */
+  border: 1px solid #d1d5da;
+  border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .chatbot-frame iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none; /* Remove iframe border */
+  display: block; /* Prevent extra space below iframe */
 }
 
+
+/* ---------------------------------- */
+/* Animations & Transitions           */
+/* ... (rest of Animations CSS from previous code - unchanged) ... */
+#navbar a,
+#login-form button,
+#register-form button,
+#admin-reports-container .update-status-btn,
+#report-form button[type="submit"],
+#forum-post-form button[type="submit"],
+.chatbot-toggle,
+.hero-buttons .button,
+.feature-item:hover,
+.cta-buttons .button {
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.page {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ---------------------------------- */
+/* Utility Classes                    */
+/* ... (rest of Utility Classes CSS from previous code - unchanged) ... */
+.page {
+  display: none; /* Hidden by default */
+}
+.page.show {
+  display: block; /* Use .show class to make pages visible */
+}
+
+
+/* ---------------------------------- */
+/* Responsive adjustments (Basic)      */
+/* ... (rest of Responsive CSS from previous code - unchanged, but added landing page adjustments) ... */
 @media (max-width: 768px) {
-  #app {
+  .page {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  #navbar {
+    padding: 10px;
+  }
+
+  #navbar ul {
     flex-direction: column;
+    text-align: center;
   }
 
-  .container {
-    max-width: 100%;
+  #navbar li {
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
-  #chatbot-container {
-    position: static;
-    width: 100%;
-    margin-top: 20px;
+  /* Landing Page Responsive Adjustments */
+  #hero-section {
+    padding: 40px 15px;
+    flex-direction: column; /* Stack content and image on small screens */
+    text-align: center;
+  }
+
+  .hero-content {
+    padding-right: 0; /* Remove right padding */
+    margin-bottom: 30px; /* Add space below content */
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content .hero-tagline {
+    font-size: 1.1rem;
+  }
+
+  .hero-buttons .button {
+    display: block; /* Stack buttons on small screens */
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .hero-buttons .button:last-child {
+    margin-bottom: 0;
+  }
+
+  #features-section,
+  #cta-section {
+    padding: 40px 15px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr; /* Single column on small screens */
   }
 }
-
