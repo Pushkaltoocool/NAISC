@@ -1,85 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SGResolve</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SGResolve - AI in Smart City</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="app">
 
-  <div id="app">
-    <div class="container">
-      <!-- Login Page -->
-      <div id="login-page" class="page">
-        <h1>Login</h1>
-        <form id="login-form">
-          <input type="email" id="login-email" placeholder="Email" required>
-          <input type="password" id="login-password" placeholder="Password" required>
-          <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
-        <div id="login-error" class="error-message"></div>
+        <nav id="navbar" style="display: none;">
+            <ul>
+                <li><a href="#" id="nav-home">Home</a></li>
+                <li><a href="#" id="nav-my-reports">My Reports</a></li>
+                <li><a href="#" id="nav-community">Community Forum</a></li>
+                <li><a href="#" id="nav-about">About</a></li>
+                <li><a href="#" id="nav-contact">Contact</a></li>
+                <li><a href="#" id="nav-logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <div id="landing-page" class="page show">
+            <section id="hero-section">
+                <div class="hero-content">
+                    <h1>Welcome to SGResolve</h1>
+                    <p class="hero-tagline">Making Singapore a Smarter, More Responsive City with AI.</p>
+                    <div class="hero-buttons">
+                        <a href="#" id="hero-report-issue" class="button primary-button">Report an Issue</a>
+                        <a href="#" id="hero-learn-more" class="button secondary-button">Learn More</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://png.pngtree.com/png-clipart/20240312/original/pngtree-smart-city-green-environmental-background-png-image_14570385.png" alt="Smart City Illustration">
+                </div>
+            </section>
+
+            <section id="features-section">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="feature-icon">💡</i>
+                        <h3>Easy Issue Reporting</h3>
+                        <p>Report city issues quickly and easily with our intuitive interface.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="feature-icon">🤖</i>
+                        <h3>AI-Powered Categorization</h3>
+                        <p>AI intelligently categorizes reports for faster resolution.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="feature-icon">🗺️</i>
+                        <h3>Real-time Tracking</h3>
+                        <p>Track the status of your reports and stay informed every step of the way.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="feature-icon">💬</i>
+                        <h3>Community Forum</h3>
+                        <p>Engage with your community and discuss local issues.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cta-section">
+                <h2>Join SGResolve Today</h2>
+                <p>Help us build a better Singapore. Report issues, track progress, and engage with your community.</p>
+                <div class="cta-buttons">
+                    <a href="#" id="cta-register" class="button primary-button">Register Now</a>
+                    <a href="#" id="cta-login" class="button secondary-button">Login</a>
+                </div>
+            </section>
+        </div>
+
+        <div id="login-page" class="page" style="display: none;">
+            <h1>Login</h1>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
+            <div id="login-error" class="error-message"></div>
+        </div>
+
+        <div id="register-page" class="page" style="display: none;">
+            <h1>Register</h1>
+            <form id="register-form">
+                <input type="text" id="register-name" placeholder="Full Name" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="go-to-login">Login here</a></p>
+            <div id="register-error" class="error-message"></div>
+        </div>
+
+        <div id="admin-page" class="page" style="display: none;">
+          <h1>Admin Dashboard</h1>
+          <div class="admin-container">
+              <div class="admin-summary">
+                  <h2>Overview</h2>
+                  <p>Welcome, Admin! Here is a quick summary of the latest reports.</p>
+              </div>
+              <div class="admin-reports">
+                  <h2>Submitted Reports</h2>
+                  <ul id="admin-reports-container"></ul>
+              </div>
+              <div class="admin-actions">
+                  <button id="refresh-reports" class="button">Refresh Reports</button>
+                  <button id="export-data" class="button secondary-button">Export Data</button>
+              </div>
+              <div class="admin-logout">
+                  <p><a href="#" id="logout-admin" class="button danger-button">Logout</a></p>
+              </div>
+          </div>
       </div>
 
-      <!-- Registration Page -->
-      <div id="register-page" class="page" style="display: none;">
-        <h1>Register</h1>
-        <form id="register-form">
-          <input type="text" id="register-name" placeholder="Full Name" required>
-          <input type="email" id="register-email" placeholder="Email" required>
-          <input type="password" id="register-password" placeholder="Password" required>
-          <button type="submit">Register</button>
-        </form>
-        <p>Already have an account? <a href="#" id="go-to-login">Login here</a></p>
-        <div id="register-error" class="error-message"></div>
-      </div>
-
-      <!-- Admin Page -->
-<div id="admin-page" class="page" style="display: none;">
-  <h1>Admin Dashboard</h1>
-  <p>Welcome, Admin!</p>
-  <div id="reports-list">
-    <h2>Reports</h2>
-    <ul id="reports-container"></ul>
-  </div>
-  <p><a href="#" id="logout-admin">Logout</a></p>
-</div>
-
-      <!-- Reporting Page -->
       <div id="reporting-page" class="page" style="display: none;">
         <h1>Report an Issue</h1>
         <form id="report-form">
-          <select id="issue-type" required>
-            <option value="">Select Issue Type</option>
-            <option value="pothole">Pothole</option>
-            <option value="illegal-dumping">Illegal Dumping</option>
-            <option value="street-light-outage">Street Light Outage</option>
-            <option value="Others">Others</option>
-          </select>
-          <textarea id="issue-description" placeholder="Describe the issue..." required></textarea>
-          <div class="file-input-wrapper">
-            <input type="file" id="issue-image" accept="image/*" required>
-            <label for="issue-image">Choose Image</label>
-          </div>
-          <button type="submit">Submit Report</button>
+            <select id="issue-type" required>
+                <option value="">Select Issue Type</option>
+                <option value="pothole">Pothole</option>
+                <option value="illegal-dumping">Illegal Dumping</option>
+                <option value="street-light-outage">Street Light Outage</option>
+                <option value="others">Others</option>
+            </select>
+            <textarea id="issue-description" placeholder="Describe the issue..." required></textarea>
+            
+            <div class="file-input-wrapper">
+                <input type="file" id="issue-image" accept="image/*" required>
+                <label for="issue-image">Choose Image</label>
+            </div>
+            
+            <div class="location-input-wrapper">
+                <input type="text" id="issue-location" placeholder="Enter location or use current location" required>
+                <button type="button" id="get-location-btn">Use Current Location</button>
+            </div>
+            
+            <button type="submit">Submit Report</button>
         </form>
-        <p><a href="#" id="logout">Logout</a></p>
         <div id="report-error" class="error-message"></div>
-      </div>
+    </div>
+    
+    <script>
+        document.getElementById("get-location-btn").addEventListener("click", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        document.getElementById("issue-location").value = position.coords.latitude + ", " + position.coords.longitude;
+                    },
+                    function(error) {
+                        alert("Unable to retrieve location. Please enter manually.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
+    
+
+        <div id="my-reports-page" class="page" style="display: none;">
+            <h1>My Reports</h1>
+            <ul id="user-reports-container">
+            </ul>
+        </div>
+
+        <div id="community-forum-page" class="page" style="display: none;">
+            <h1>Community Forum</h1>
+            <div id="forum-posts">
+            </div>
+            <div id="new-post">
+                <h2>Create a New Post</h2>
+                <form id="forum-post-form">
+                    <input type="text" id="post-title" placeholder="Title" required>
+                    <textarea id="post-content" placeholder="Share your thoughts..." required></textarea>
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="about-page" class="page" style="display: none;">
+            <h1>About SGResolve</h1>
+            <p>
+                SGResolve is dedicated to transforming Singapore into an AI-first Smart Nation.
+                Our platform enables citizens to report issues—from potholes to street light outages—and track the progress of their requests.
+                By leveraging cloud-based workflows and AI-powered categorization, we aim to enhance urban safety and efficiency.
+            </p>
+            <p>
+                Inspired by the mission to bring digital solutions to every person, home, and organization, SGResolve is your partner in creating a fully connected, intelligent city.
+            </p>
+        </div>
+
+        <div id="contact-page" class="page" style="display: none;">
+            <h1>Contact Us</h1>
+            <p>
+                If you have any questions or need support, please contact us at
+                <a href="mailto:support@sgresolve.com">support@sgresolve.com</a>.
+            </p>
+            <p>
+                You can also reach us via our social media channels or visit our office at 123 Smart City Ave, Singapore.
+            </p>
+        </div>
+
+        <div id="chatbot-container">
+            <div class="chatbot-toggle">Chat Support</div>
+            <div class="chatbot-frame">
+                <iframe
+                    allow="microphone;"
+                    width="350"
+                    height="430"
+                    src="https://console.dialogflow.com/api-client/demo/embedded/03321d05-4dc4-4696-8db6-2e05b1df6698">
+                </iframe>
+            </div>
+        </div>
+
     </div>
 
-    <div id="chatbot-container">
-      <div class="chatbot-toggle">Chat Support</div>
-      <div class="chatbot-frame">
-        <iframe
-        allow="microphone;"
-        width="350"
-        height="430"
-        src="https://console.dialogflow.com/api-client/demo/embedded/03321d05-4dc4-4696-8db6-2e05b1df6698">
-    </iframe>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
