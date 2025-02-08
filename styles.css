@@ -217,7 +217,6 @@ li {
   }
 }
 
-
 .hero-image img {
   max-width: 100%;
   height: auto;
@@ -225,7 +224,9 @@ li {
 }
 
 
+/* ---------------------------------- */
 /* Features Section */
+/* ---------------------------------- */
 #features-section {
   padding: 60px 20px;
   text-align: center;
@@ -253,7 +254,6 @@ li {
   }
 }
 
-
 .feature-item {
   padding: 30px;
   background-color: #fff;
@@ -266,7 +266,6 @@ li {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   transform: translateY(-5px); /* Slight lift on hover */
 }
-
 
 .feature-icon {
   font-size: 2.5rem;
@@ -284,7 +283,9 @@ li {
 }
 
 
+/* ---------------------------------- */
 /* CTA Section (Call to Action) */
+/* ---------------------------------- */
 #cta-section {
   padding: 60px 20px;
   text-align: center;
@@ -332,7 +333,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Login & Register Pages            */
+/* Login & Register Pages */
+/* ---------------------------------- */
 /* ... (rest of Login & Register CSS from previous code - unchanged) ... */
 #login-page,
 #register-page {
@@ -385,7 +387,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Admin Dashboard Page             */
+/* Admin Dashboard Page */
+/* ---------------------------------- */
 /* ... (rest of Admin Dashboard CSS from previous code - unchanged) ... */
 #admin-page {
   padding: 30px;
@@ -494,8 +497,10 @@ li {
   font-weight: bold;
 }
 
+
 /* ---------------------------------- */
-/* User Reporting Page              */
+/* User Reporting Page */
+/* ---------------------------------- */
 /* ... (rest of Reporting Page CSS from previous code - unchanged) ... */
 #reporting-page {
   padding: 30px;
@@ -569,7 +574,8 @@ li {
 }
 
 /* ---------------------------------- */
-/* My Reports Page                  */
+/* My Reports Page */
+/* ---------------------------------- */
 /* ... (rest of My Reports CSS from previous code - unchanged) ... */
 #my-reports-page {
   padding: 30px;
@@ -597,7 +603,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Community Forum Page             */
+/* Community Forum Page */
+/* ---------------------------------- */
 /* ... (rest of Community Forum CSS from previous code - unchanged) ... */
 #community-forum-page {
   padding: 30px;
@@ -667,7 +674,8 @@ li {
 }
 
 /* ---------------------------------- */
-/* About & Contact Pages             */
+/* About & Contact Pages */
+/* ---------------------------------- */
 /* ... (rest of About & Contact CSS from previous code - unchanged) ... */
 #about-page,
 #contact-page {
@@ -676,7 +684,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Chatbot Container                  */
+/* Chatbot Container */
+/* ---------------------------------- */
 /* ... (rest of Chatbot CSS from previous code - unchanged) ... */
 #chatbot-container {
   position: fixed;
@@ -709,7 +718,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Animations & Transitions           */
+/* Animations & Transitions */
+/* ---------------------------------- */
 /* ... (rest of Animations CSS from previous code - unchanged) ... */
 #navbar a,
 #login-form button,
@@ -737,7 +747,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Utility Classes                    */
+/* Utility Classes */
+/* ---------------------------------- */
 /* ... (rest of Utility Classes CSS from previous code - unchanged) ... */
 .page {
   display: none; /* Hidden by default */
@@ -748,7 +759,8 @@ li {
 
 
 /* ---------------------------------- */
-/* Responsive adjustments (Basic)      */
+/* Responsive adjustments (Basic) */
+/* ---------------------------------- */
 /* ... (rest of Responsive CSS from previous code - unchanged, but added landing page adjustments) ... */
 @media (max-width: 768px) {
   .page {
@@ -819,5 +831,138 @@ li {
 
   .features-grid {
     grid-template-columns: 1fr; /* Single column on small screens */
+  }
+}
+
+/* Add these styles to your existing styles.css file */
+
+/* Status styling for reports */
+.report-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.report-status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.report-status.in-progress {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.report-status.resolved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Status update controls styling */
+.status-update-controls {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-update {
+  padding: 8px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+.update-status-btn {
+  padding: 8px 16px;
+  background-color: #0969da;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.update-status-btn:hover {
+  background-color: #044289;
+}
+
+/* Success message styling */
+.success-message {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Additional Admin Analytics and Reports Styles */
+.admin-analytics {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#reportsChart {
+  max-height: 400px;
+  width: 100% !important;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.report-type {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.report-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.report-user {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-update-controls {
+  margin-top: 1rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1200px) {
+  .admin-container {
+    grid-template-columns: 1fr 2fr;
   }
 }
