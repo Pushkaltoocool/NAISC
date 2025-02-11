@@ -96,40 +96,227 @@
       <div id="register-error" class="error-message"></div>
     </div>
 
-    <div id="admin-page" class="page" style="display: none;">
-      <h1>Admin Dashboard</h1>
-      <div class="admin-container">
-        <div class="admin-analytics">
-          <h2>Reports Analytics</h2>
-          <canvas id="reportsChart"></canvas>
-        </div>
-        <div class="admin-reports">
-          <h2>Submitted Reports</h2>
-          <div class="admin-actions">
-            <button id="refresh-reports" class="button">Refresh Reports</button>
-            <button id="export-data" class="button secondary-button">Export Data</button>
-          </div>
-          <ul id="admin-reports-container">
-            <!-- Example dynamic report entry with a status dropdown -->
-            <li class="report-item">
-              <p><strong>Report ID:</strong> <span class="report-id">12345</span></p>
-              <p><strong>Description:</strong> Pothole on Main St</p>
-              <p><strong>Status:</strong> <span class="report-status">Pending</span></p>
-              <label for="status-dropdown-12345">Update Status:</label>
-              <select id="status-dropdown-12345" class="status-dropdown" data-report-id="12345">
-                <option value="Pending" selected>Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-              </select>
-            </li>
-            <!-- Additional reports will be rendered dynamically here via script.js -->
-          </ul>
-        </div>
-        <div class="admin-logout">
-          <p><a href="#" id="logout-admin" class="button danger-button">Logout</a></p>
-        </div>
-      </div>
+<!-- Updated Admin Dashboard -->
+<div id="admin-page" class="page" style="display: none;">
+  <h1>Admin Dashboard</h1>
+  <div class="admin-container">
+    <!-- Analytics Section -->
+    <div class="admin-analytics">
+      <h2>Reports Analytics</h2>
+      <canvas id="reportsChart"></canvas>
+      <button id="refresh-analytics" class="button">Refresh Analytics</button>
     </div>
+
+    <!-- Reports List Section -->
+    <div class="admin-reports">
+      <h2>Submitted Reports</h2>
+      <div class="admin-actions">
+        <button id="refresh-reports" class="button">Refresh Reports</button>
+        <button id="export-data" class="button secondary-button">Export Data</button>
+      </div>
+      <ul id="admin-reports-container">
+        <!-- The report items will be rendered dynamically from JavaScript -->
+      </ul>
+    </div>
+
+    <!-- Logout Section -->
+    <div class="admin-logout">
+      <p><a href="#" id="logout-admin" class="button danger-button">Logout</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Inline JavaScript to simulate real-time report updates and persistence -->
+<script>
+// Wrap everything in DOMContentLoaded to ensure the DOM is ready
+document.addEventListener('DOMContentLoaded', function () {
+  // -------------------------------
+  // Data Persistence & Initialization
+  // -------------------------------
+  // Load persisted reports from localStorage if available; otherwise, use initial fake data.
+  let reports = [];
+  if (localStorage.getItem('reports')) {
+    reports = JSON.parse(localStorage.getItem('reports'));
+  } else {
+    reports = [
+      { id: 1001, description: 'Pothole on Main St', status: 'Pending' },
+      { id: 1002, description: 'Broken street light at 2nd Ave', status: 'In Progress' },
+      { id: 1003, description: 'Overflowing garbage bin on Elm St', status: 'Resolved' },
+      { id: 1004, description: 'Illegal dumping near Riverside Park', status: 'Pending' }
+    ];
+    localStorage.setItem('reports', JSON.stringify(reports));
+  }
+
+  // Helper function to persist the reports array to localStorage
+  function persistReports() {
+    localStorage.setItem('reports', JSON.stringify(reports));
+  }
+
+  // -------------------------------
+  // Chart.js Setup
+  // -------------------------------
+  let reportsChart;
+
+  // Returns an array with counts: [pending, inProgress, resolved]
+  function getReportCounts() {
+    const pending = reports.filter(r => r.status === 'Pending').length;
+    const inProgress = reports.filter(r => r.status === 'In Progress').length;
+    const resolved = reports.filter(r => r.status === 'Resolved').length;
+    return [pending, inProgress, resolved];
+  }
+
+  // Create the Chart.js bar chart
+  function createReportsChart() {
+    const ctx = document.getElementById('reportsChart').getContext('2d');
+    const [pending, inProgress, resolved] = getReportCounts();
+    reportsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Pending', 'In Progress', 'Resolved'],
+        datasets: [{
+          label: 'Number of Reports',
+          data: [pending, inProgress, resolved],
+          backgroundColor: [
+            'rgba(255, 193, 7, 0.6)',    // Pending (yellow)
+            'rgba(23, 162, 184, 0.6)',   // In Progress (cyan)
+            'rgba(40, 167, 69, 0.6)'     // Resolved (green)
+          ],
+          borderColor: [
+            'rgba(255, 193, 7, 1)',
+            'rgba(23, 162, 184, 1)',
+            'rgba(40, 167, 69, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Reports by Status'
+          }
+        }
+      }
+    });
+  }
+
+  // Update the chart when the reports data changes
+  function updateReportsChart() {
+    const [pending, inProgress, resolved] = getReportCounts();
+    reportsChart.data.datasets[0].data = [pending, inProgress, resolved];
+    reportsChart.update();
+  }
+
+  // -------------------------------
+  // Update Admin Reports UI
+  // -------------------------------
+  // This function re-renders the reports list in the admin dashboard.
+  function updateAdminReportsUI() {
+    const container = document.getElementById('admin-reports-container');
+    container.innerHTML = ''; // Clear existing list
+    reports.forEach(report => {
+      // Create the list item element
+      const li = document.createElement('li');
+      li.className = 'report-item';
+      li.innerHTML = `
+        <p><strong>Report ID:</strong> <span class="report-id">${report.id}</span></p>
+        <p><strong>Description:</strong> ${report.description}</p>
+        <p><strong>Status:</strong> <span class="report-status">${report.status}</span></p>
+        <label for="status-dropdown-${report.id}">Update Status:</label>
+        <select id="status-dropdown-${report.id}" class="status-dropdown" data-report-id="${report.id}">
+          <option value="Pending" ${report.status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option value="In Progress" ${report.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+          <option value="Resolved" ${report.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+        </select>
+      `;
+      container.appendChild(li);
+    });
+  }
+
+  // -------------------------------
+  // Simulate New Reports Every 30 Seconds
+  // -------------------------------
+  // Array of possible report descriptions (you can add more)
+  const possibleDescriptions = [
+    'Fallen tree blocking the road',
+    'Graffiti on public wall',
+    'Water leakage on 5th Street',
+    'Abandoned vehicle on highway',
+    'Damaged bench in park'
+  ];
+
+  // Simulate a new report arriving every 30 seconds
+  function simulateNewReport() {
+    // Generate a new report id (max id + 1)
+    const maxId = reports.reduce((max, report) => report.id > max ? report.id : max, 0);
+    const newId = maxId + 1;
+    // Pick a random description from the array
+    const randomDescription = possibleDescriptions[Math.floor(Math.random() * possibleDescriptions.length)];
+    // New reports always start with a "Pending" status
+    const newReport = { id: newId, description: randomDescription, status: 'Pending' };
+    // Add the new report to the reports array and persist it
+    reports.push(newReport);
+    persistReports();
+    // Update the UI and chart
+    updateAdminReportsUI();
+    updateReportsChart();
+    console.log(`New report added: ${newId} - ${randomDescription}`);
+  }
+  // Set the interval for simulating new reports (30 seconds = 30000 ms)
+  setInterval(simulateNewReport, 30000);
+
+  // -------------------------------
+  // Event Listeners for Buttons and Dropdowns
+  // -------------------------------
+  // "Refresh Analytics" button to manually update the chart
+  document.getElementById('refresh-analytics').addEventListener('click', function () {
+    updateReportsChart();
+    alert('Analytics refreshed!');
+  });
+
+  // "Refresh Reports" button to re-render the reports list and chart
+  document.getElementById('refresh-reports').addEventListener('click', function () {
+    alert('Reports refreshed!');
+    updateAdminReportsUI();
+    updateReportsChart();
+  });
+
+  // "Export Data" button (dummy implementation)
+  document.getElementById('export-data').addEventListener('click', function () {
+    alert('Exporting data...');
+    // You can implement CSV export functionality here.
+  });
+
+  // Delegate change event for status dropdowns to update report status
+  document.getElementById('admin-reports-container').addEventListener('change', function (e) {
+    if (e.target && e.target.classList.contains('status-dropdown')) {
+      const reportId = parseInt(e.target.getAttribute('data-report-id'));
+      const newStatus = e.target.value;
+      const report = reports.find(r => r.id === reportId);
+      if (report) {
+        report.status = newStatus;
+        persistReports();
+        updateAdminReportsUI();
+        updateReportsChart();
+      }
+    }
+  });
+
+  // -------------------------------
+  // Initialize the Dashboard
+  // -------------------------------
+  createReportsChart();
+  updateAdminReportsUI();
+});
+</script>
+
 
     <div id="reporting-page" class="page" style="display: none;">
       <h1>Report an Issue</h1>
