@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore Urban Problems Map</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            background-color: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-top: 20px;
+            cursor: crosshair;
+        }
+        .title {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            margin: 0;
+            border-radius: 8px 8px 0 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #ddd;
+        }
+        .controls button {
+            margin: 0 8px;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+        .location-list {
+            margin: 20px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        .location-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-left: 4px solid #e74c3c;
+        }
+        .location-list li:hover {
+            background-color: #dfe6e9;
+        }
+        .map-placeholder {
+            display: none;
+            height: 500px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        .input-form {
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+        }
+        .input-form input, .input-form textarea, .input-form select {
+            margin: 8px 0;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        .input-form input:focus, .input-form textarea:focus, .input-form select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+        .input-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .input-form button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            width: 100%;
+        }
+        .input-form button:hover {
+            background-color: #27ae60;
+        }
+        h2 {
+            margin: 20px 0 10px 0;
+            color: #2c3e50;
+            font-size: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .input-form .instructions {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container.dark-mode {
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+        }
+        .title.dark-mode {
+            background-color: #333;
+        }
+        .controls.dark-mode {
+            background-color: #2c2c2c;
+        }
+        .dark-mode .controls button {
+            background-color: #444;
+            color: #e0e0e0;
+        }
+        .dark-mode .controls button:hover {
+            background-color: #555;
+        }
+        .dark-mode .input-form {
+            background-color: #2c2c2c;
+        }
+        .dark-mode .input-form input, .dark-mode .input-form textarea, .dark-mode .input-form select {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        .dark-mode .input-form button {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .dark-mode .input-form button:hover {
+            background-color: #45a049;
+        }
+        .dark-mode .location-list li {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+        }
+        .dark-mode .location-list li:hover {
+            background-color: #444;
+        }
+        #map.dark-mode {
+            background-color: #333;
+        }
+        .search-container {
+            margin: 10px 0;
+        }
+        #searchInput {
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .dark-mode #searchInput {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        .controls select {
+            padding: 8px;
+            margin: 0 8px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .dark-mode .controls select {
+            background-color: #444;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        #totalIssues {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .dark-mode #totalIssues {
+            color: #4CAF50;
+        }
+        #imagePreview {
+            margin-top: 10px;
+        }
+        #imagePreview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 4px;
+        }
+        #clearImage {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-left: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #clearImage:hover {
+            background-color: #c0392b;
+        }
+        .dark-mode #clearImage {
+            background-color: #d32f2f;
+        }
+        .dark-mode #clearImage:hover {
+            background-color: #b71c1c;
+        }
+        .location-list li img {
+            max-width: 50px;
+            max-height: 50px;
+            margin-top: 5px;
+            border-radius: 4px;
+        }
+        .threat-icon {
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Singapore Urban Problems Map</h1>
+        
+        <div class="input-form">
+            <div class="instructions">Click on the map to auto-fill coordinates, then add name and description</div>
+            <input type="text" id="locationName" placeholder="Location Name" required>
+            <input type="number" id="latitude" step="any" placeholder="Latitude (e.g., 1.3521)" required>
+            <input type="number" id="longitude" step="any" placeholder="Longitude (e.g., 103.8198)" required>
+            <textarea id="problemDesc" placeholder="Describe the urban problem" rows="3" required></textarea>
+            <select id="category" required>
+                <option value="">Select Category</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Environmental">Environmental</option>
+                <option value="Safety">Safety</option>
+                <option value="Others">Others</option>
+            </select>
+            <select id="urgency" required>
+                <option value="">Select Urgency Level</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <select id="threat" required>
+                <option value="">Select Threat Amount</option>
+                <option value="Minor">Minor</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Severe">Severe</option>
+            </select>
+            <label for="imageUpload">Upload Image (optional)</label>
+            <input type="file" id="imageUpload" accept="image/*">
+            <button id="clearImage">Clear Image</button>
+            <div id="imagePreview"></div>
+            <button onclick="addNewLocation()">Add Location</button>
+        </div>
+        
+        <div class="controls">
+            <button id="zoomIn">Zoom In</button>
+            <button id="zoomOut">Zoom Out</button>
+            <button id="resetView">Reset View</button>
+            <button id="toggleDarkMode">Toggle Dark Mode</button>
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Environmental">Environmental</option>
+                <option value="Safety">Safety</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+        
+        <div id="map"></div>
+        <div class="map-placeholder" id="mapPlaceholder">
+            Map loading... If the map doesn't appear, please ensure JavaScript is enabled.
+        </div>
+        
+        <h2>Reported Issues</h2>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search locations or problems">
+        </div>
+        <p>Total reported issues: <span id="totalIssues">0</span></p>
+        <ul class="location-list" id="locationList"></ul>
+    </div>
+
+    <script>
+        let map;
+        const markers = {};
+        let tempMarker = null;
+        let imageData = null;
+        const locations = [
+            { name: "Punggol", coords: [1.3984, 103.9072], problem: "Recurring sewage backup in residential blocks causing unpleasant odors", category: "Infrastructure", urgency: "Medium", threat: "Moderate", image: null },
+            { name: "Tampines", coords: [1.3496, 103.9568], problem: "Damaged bus shelters due to recent storm that need urgent repair", category: "Infrastructure", urgency: "High", threat: "Severe", image: null },
+            { name: "Marina Bay", coords: [1.2821, 103.8636], problem: "Malfunctioning pedestrian crossing signals creating safety hazards", category: "Safety", urgency: "High", threat: "Severe", image: null },
+            { name: "Jurong East", coords: [1.3329, 103.7436], problem: "Illegal dumping of construction materials behind shopping center", category: "Environmental", urgency: "Low", threat: "Minor", image: null },
+            { name: "Woodlands", coords: [1.4382, 103.7890], problem: "Multiple street light outages along main road causing safety concerns", category: "Safety", urgency: "Medium", threat: "Moderate", image: null },
+            { name: "Changi", coords: [1.3644, 103.9915], problem: "Significant pothole formation on access roads damaging vehicles", category: "Infrastructure", urgency: "Medium", threat: "Moderate", image: null },
+            { name: "Sentosa", coords: [1.2494, 103.8303], problem: "Beach erosion threatening walkways and recreational areas", category: "Environmental", urgency: "Low", threat: "Minor", image: null },
+            { name: "Bukit Timah", coords: [1.3294, 103.8021], problem: "Overgrown vegetation blocking nature trail signs and paths", category: "Environmental", urgency: "Low", threat: "Minor", image: null }
+        ];
+        let currentCategory = '';
+        let currentQuery = '';
+
+        // Custom icons for threat levels
+        const threatIcons = {
+            Minor: L.icon({
+                iconUrl: 'https://unpkg.com/@fortawesome/fontawesome-free@5.15.4/svgs/solid/exclamation-circle.svg',
+                iconSize: [25, 25],
+                iconAnchor: [12, 12],
+                className: 'threat-icon minor-threat'
+            }),
+            Moderate: L.icon({
+                iconUrl: 'https://unpkg.com/@fortawesome/fontawesome-free@5.15.4/svgs/solid/exclamation-triangle.svg',
+                iconSize: [25, 25],
+                iconAnchor: [12, 12],
+                className: 'threat-icon moderate-threat'
+            }),
+            Severe: L.icon({
+                iconUrl: 'https://unpkg.com/@fortawesome/fontawesome-free@5.15.4/svgs/solid/skull-crossbones.svg',
+                iconSize: [25, 25],
+                iconAnchor: [12, 12],
+                className: 'threat-icon severe-threat'
+            })
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('mapPlaceholder').style.display = 'none';
+            document.getElementById('map').style.display = 'block';
+            
+            map = L.map('map', {
+                center: [1.3521, 103.8198],
+                zoom: 11,
+                minZoom: 10,
+                maxZoom: 18
+            });
+            
+            const lightTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                subdomains: ['a', 'b', 'c']
+            });
+            const darkTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            });
+            let currentTileLayer = lightTileLayer;
+            currentTileLayer.addTo(map);
+
+            function setTileLayer() {
+                if (document.body.classList.contains('dark-mode')) {
+                    if (currentTileLayer === lightTileLayer) {
+                        map.removeLayer(lightTileLayer);
+                        darkTileLayer.addTo(map);
+                        currentTileLayer = darkTileLayer;
+                    }
+                } else {
+                    if (currentTileLayer === darkTileLayer) {
+                        map.removeLayer(darkTileLayer);
+                        lightTileLayer.addTo(map);
+                        currentTileLayer = lightTileLayer;
+                    }
+                }
+            }
+
+            initializeLocations();
+            
+            document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
+            document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
+            document.getElementById('resetView').addEventListener('click', () => map.setView([1.3521, 103.8198], 11));
+            document.getElementById('toggleDarkMode').addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                setTileLayer();
+            });
+            document.getElementById('searchInput').addEventListener('input', function() {
+                currentQuery = this.value.toLowerCase();
+                filterLocations();
+            });
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                currentCategory = this.value;
+                filterLocations();
+            });
+
+            document.getElementById('totalIssues').textContent = locations.length;
+
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lon = e.latlng.lng;
+                if (tempMarker) {
+                    map.removeLayer(tempMarker);
+                }
+                tempMarker = L.marker([lat, lon], {
+                    icon: L.icon({
+                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41]
+                    })
+                }).addTo(map);
+                document.getElementById('latitude').value = lat.toFixed(4);
+                document.getElementById('longitude').value = lon.toFixed(4);
+                document.getElementById('locationName').focus();
+            });
+
+            document.getElementById('imageUpload').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imageData = e.target.result;
+                        document.getElementById('imagePreview').innerHTML = 
+                            `<img src="${imageData}" alt="Preview" />`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imageData = null;
+                    document.getElementById('imagePreview').innerHTML = '';
+                }
+            });
+
+            document.getElementById('clearImage').addEventListener('click', function() {
+                document.getElementById('imageUpload').value = '';
+                imageData = null;
+                document.getElementById('imagePreview').innerHTML = '';
+            });
+            
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
+
+            // Add custom styles for threat icons
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .minor-threat { filter: invert(52%) sepia(13%) saturate(3207%) hue-rotate(70deg) brightness(95%) contrast(80%); }
+                .moderate-threat { filter: invert(65%) sepia(93%) saturate(1352%) hue-rotate(15deg) brightness(103%) contrast(101%); }
+                .severe-threat { filter: invert(15%) sepia(93%) saturate(7491%) hue-rotate(356deg) brightness(97%) contrast(103%); }
+            `;
+            document.head.appendChild(style);
+        });
+
+        function initializeLocations() {
+            const locationListElement = document.getElementById('locationList');
+            locations.forEach(location => addLocationToMapAndList(location, locationListElement));
+        }
+
+        function addLocationToMapAndList(location, locationListElement) {
+            const urgencyColor = {
+                Low: '#2ecc71',    // Green
+                Medium: '#f1c40f',  // Yellow
+                High: '#e74c3c'     // Red
+            }[location.urgency];
+
+            const marker = L.circleMarker(location.coords, {
+                radius: 8,
+                fillColor: urgencyColor,
+                color: '#000',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            let popupContent = `<b>${location.name} (${location.category})</b><br><span style="color: red;">Issue:</span> ${location.problem}<br><b>Urgency:</b> ${location.urgency}<br><b>Threat:</b> ${location.threat}`;
+            if (location.image) {
+                popupContent += `<br><img src="${location.image}" style="max-width:100px; max-height:100px;" />`;
+            }
+            marker.bindPopup(popupContent);
+
+            // Add threat icon as a secondary marker
+            const threatMarker = L.marker(location.coords, {
+                icon: threatIcons[location.threat]
+            }).addTo(map);
+
+            markers[location.name] = L.layerGroup([marker, threatMarker]);
+            
+            const listItem = document.createElement('li');
+            let listItemContent = `<strong>${location.name} (${location.category}):</strong> ${location.problem}<br><span style="color: ${urgencyColor};">Urgency: ${location.urgency}</span> | Threat: ${location.threat}`;
+            if (location.image) {
+                listItemContent += `<br><img src="${location.image}" alt="${location.name} image" />`;
+            }
+            listItem.innerHTML = listItemContent;
+            listItem.setAttribute('data-name', location.name);
+            listItem.addEventListener('click', () => {
+                map.setView(location.coords, 14);
+                marker.openPopup();
+            });
+            locationListElement.appendChild(listItem);
+        }
+
+        function addNewLocation() {
+            const name = document.getElementById('locationName').value;
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lon = parseFloat(document.getElementById('longitude').value);
+            const problem = document.getElementById('problemDesc').value;
+            const category = document.getElementById('category').value;
+            const urgency = document.getElementById('urgency').value;
+            const threat = document.getElementById('threat').value;
+
+            if (!name || isNaN(lat) || isNaN(lon) || !problem || !category || !urgency || !threat) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (lat < 1.15 || lat > 1.47 || lon < 103.6 || lon > 104.1) {
+                alert('Coordinates seem outside Singapore. Please check your input.');
+                return;
+            }
+
+            const newLocation = {
+                name: name,
+                coords: [lat, lon],
+                problem: problem,
+                category: category,
+                urgency: urgency,
+                threat: threat,
+                image: imageData
+            };
+
+            locations.push(newLocation);
+            addLocationToMapAndList(newLocation, document.getElementById('locationList'));
+
+            if (tempMarker) {
+                map.removeLayer(tempMarker);
+                tempMarker = null;
+            }
+
+            document.getElementById('locationName').value = '';
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            document.getElementById('problemDesc').value = '';
+            document.getElementById('category').selectedIndex = 0;
+            document.getElementById('urgency').selectedIndex = 0;
+            document.getElementById('threat').selectedIndex = 0;
+            document.getElementById('imageUpload').value = '';
+            imageData = null;
+            document.getElementById('imagePreview').innerHTML = '';
+
+            filterLocations();
+        }
+
+        function filterLocations() {
+            locations.forEach(location => {
+                const categoryMatch = currentCategory === '' || location.category === currentCategory;
+                const text = `${location.name} ${location.problem}`.toLowerCase();
+                const queryMatch = currentQuery === '' || text.includes(currentQuery);
+                if (categoryMatch && queryMatch) {
+                    if (!map.hasLayer(markers[location.name])) {
+                        markers[location.name].addTo(map);
+                    }
+                } else {
+                    if (map.hasLayer(markers[location.name])) {
+                        map.removeLayer(markers[location.name]);
+                    }
+                }
+            });
+
+            const listItems = document.querySelectorAll('.location-list li');
+            listItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                const location = locations.find(loc => loc.name === name);
+                const categoryMatch = currentCategory === '' || location.category === currentCategory;
+                const text = `${location.name} ${location.problem}`.toLowerCase();
+                const queryMatch = currentQuery === '' || text.includes(currentQuery);
+                item.style.display = (categoryMatch && queryMatch) ? '' : 'none';
+            });
+
+            const visibleCount = locations.filter(location => {
+                const categoryMatch = currentCategory === '' || location.category === currentCategory;
+                const text = `${location.name} ${location.problem}`.toLowerCase();
+                const queryMatch = currentQuery === '' || text.includes(currentQuery);
+                return categoryMatch && queryMatch;
+            }).length;
+            document.getElementById('totalIssues').textContent = visibleCount;
+        }
+    </script>
+</body>
+</html>
