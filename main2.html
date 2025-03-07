@@ -131,6 +131,14 @@
         .input-form button:hover {
             background-color: #27ae60;
         }
+        .input-form #detectLocation {
+            width: auto;
+            margin: 8px 0;
+            background-color: #f39c12;
+        }
+        .input-form #detectLocation:hover {
+            background-color: #e67e22;
+        }
         h2 {
             margin: 20px 0 10px 0;
             color: #2c3e50;
@@ -269,10 +277,11 @@
         <h1 class="title">Singapore Urban Problems Map</h1>
         
         <div class="input-form">
-            <div class="instructions">Click on the map to auto-fill coordinates, then add name and description</div>
+            <div class="instructions">Click on the map to auto-fill coordinates, or use the "Detect Location" button below, then add name and description</div>
             <input type="text" id="locationName" placeholder="Location Name" required>
             <input type="number" id="latitude" step="any" placeholder="Latitude (e.g., 1.3521)" required>
             <input type="number" id="longitude" step="any" placeholder="Longitude (e.g., 103.8198)" required>
+            <button type="button" id="detectLocation">Detect Location</button>
             <textarea id="problemDesc" placeholder="Describe the urban problem" rows="3" required></textarea>
             <select id="category" required>
                 <option value="">Select Category</option>
@@ -426,6 +435,7 @@
 
             document.getElementById('totalIssues').textContent = locations.length;
 
+            // Map click event to set temporary marker and autofill coordinates
             map.on('click', function(e) {
                 const lat = e.latlng.lat;
                 const lon = e.latlng.lng;
@@ -442,6 +452,34 @@
                 document.getElementById('latitude').value = lat.toFixed(4);
                 document.getElementById('longitude').value = lon.toFixed(4);
                 document.getElementById('locationName').focus();
+            });
+
+            // Detect Location button event using geolocation API
+            document.getElementById('detectLocation').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        if (tempMarker) {
+                            map.removeLayer(tempMarker);
+                        }
+                        tempMarker = L.marker([lat, lon], {
+                            icon: L.icon({
+                                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41]
+                            })
+                        }).addTo(map);
+                        document.getElementById('latitude').value = lat.toFixed(4);
+                        document.getElementById('longitude').value = lon.toFixed(4);
+                        map.setView([lat, lon], 14);
+                        document.getElementById('locationName').focus();
+                    }, function(error) {
+                        alert('Error retrieving location: ' + error.message);
+                    });
+                } else {
+                    alert('Geolocation is not supported by your browser.');
+                }
             });
 
             document.getElementById('imageUpload').addEventListener('change', function(event) {
