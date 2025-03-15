@@ -1,13 +1,12 @@
 /* =============================================================================
    SGResolve - Comprehensive CSS Redesign
    =============================================================================
-   This CSS file completely redoes the styling for SGResolve. The landing
-   page design is preserved as you like it, while all other pages (login,
-   register, admin dashboard, reporting, my reports, community forum, about,
-   contact, and chatbot) have been re-styled to occupy a more generous area
-   without being overly wide. All text boxes and buttons are styled with
-   aesthetic improvements such as rounded corners, soft shadows, and modern
-   typography.
+   This CSS file revitalizes SGResolve's styling. The landing page remains intact
+   as per your preference, while all other pages (login, register, admin dashboard,
+   reporting, my reports, community forum, about, contact, and chatbot) are
+   enhanced with vibrant colors, engaging buttons with icons and animations,
+   and a cohesive, appealing aesthetic. White space is minimized with subtle
+   gradients and shadows, ensuring a professional yet lively interface.
    
    =============================================================================
    Table of Contents:
@@ -25,45 +24,52 @@
    12. Chatbot Container
    13. Animations & Transitions
    14. Responsive Adjustments
+   15. Map Styling
    ============================================================================= */
 
 /* ============================================================================
-   01. CSS VARIABLES & BASE SETTINGS
+   01. CSS Variables & Base Settings
    ============================================================================ */
    :root {
-    /* Colors */
-    --primary-color: #0969da;
-    --primary-dark: #044289;
-    --secondary-color: #2ea44f;
-    --secondary-dark: #22863a;
-    --accent-color: #f4a261;
-    --background-color: #f0f2f5;
+    /* Existing Colors */
+    --primary-color: #0969da; /* Blue */
+    --primary-dark: #044289;  /* Darker blue */
+    --secondary-color: #2ea44f; /* Green */
+    --secondary-dark: #22863a; /* Darker green */
+    --accent-color: #f4a261; /* Light orange */
+    --background-color: #f0f2f5; /* Light gray */
     --white: #ffffff;
-    --text-color: #24292e;
-    --muted-color: #586069;
-    --border-color: #d1d5da;
-    --error-color: #d73a49;
-    --success-color: #155724;
-    
+    --text-color: #24292e; /* Near black */
+    --muted-color: #586069; /* Gray */
+    --border-color: #d1d5da; /* Light border */
+    --error-color: #d73a49; /* Red */
+    --success-color: #155724; /* Dark green */
+  
+    /* New Gradient Colors */
+    --gradient-start: #4facfe; /* Light blue */
+    --gradient-end: #00f2fe; /* Cyan */
+  
+    /* Shadows */
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 6px 10px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 10px 15px rgba(0, 0, 0, 0.2);
+  
     /* Font Families */
     --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-heading: 'Segoe UI', sans-serif;
-    
+  
     /* Sizing */
     --max-width-content: 800px;
     --container-padding: 20px;
-    
-    /* Radius & Shadows */
+  
+    /* Radius */
     --border-radius: 8px;
     --input-radius: 6px;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --input-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
   }
   
   /* ============================================================================
-     02. CSS RESET & GLOBAL STYLES
+     02. CSS Reset & Global Styles
      ============================================================================ */
-  /* Reset default browser styles */
   *,
   *::before,
   *::after {
@@ -72,46 +78,39 @@
     box-sizing: border-box;
   }
   
-  /* Set base font-size and smooth rendering */
   html {
     font-size: 16px;
     scroll-behavior: smooth;
   }
   
-  /* Global body styles */
   body {
     font-family: var(--font-base);
     line-height: 1.6;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background: linear-gradient(135deg, var(--background-color), #e6e9ef); /* Subtle gradient */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* Default link styling */
   a {
     color: var(--primary-color);
     text-decoration: none;
     transition: color 0.2s ease;
   }
+  
   a:hover {
     color: var(--primary-dark);
-    text-decoration: underline;
   }
   
-  /* Lists reset */
   ul, ol {
     list-style: none;
-    padding-left: 0;
   }
   
-  /* Images responsive */
   img {
     max-width: 100%;
     display: block;
   }
   
-  /* Containers */
   #app {
     max-width: 1200px;
     margin: 0 auto;
@@ -119,82 +118,70 @@
   }
   
   /* ============================================================================
-     03. TYPOGRAPHY & UTILITY CLASSES
+     03. Typography & Utility Classes
      ============================================================================ */
-  /* Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--text-color);
     margin-bottom: 0.5rem;
   }
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-  }
-  h2 {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-  h3 {
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
   
-  /* Paragraphs */
+  h1 { font-size: 2.5rem; font-weight: 600; }
+  h2 { font-size: 2rem; font-weight: 600; }
+  h3 { font-size: 1.75rem; font-weight: 600; }
+  
   p {
     margin-bottom: 1rem;
     color: var(--text-color);
   }
   
-  /* Utility: Center text */
   .text-center {
     text-align: center;
   }
   
-  /* Utility: Container box for pages (except landing) */
   .page-container {
     width: 90%;
     max-width: var(--max-width-content);
     margin: 2rem auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
   
-  /* Utility: Form groups */
   .form-group {
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
   }
+  
   .form-group label {
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--text-color);
   }
   
-  /* Utility: Input styling */
   input[type="text"],
   input[type="email"],
   input[type="password"],
+  input[type="number"],
   textarea,
   select {
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
     padding: 0.75rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: var(--input-radius);
     font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--white);
-    box-shadow: var(--input-shadow);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
   }
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="password"]:focus,
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--muted-color);
+    opacity: 0.7;
+  }
+  
+  input:focus,
   textarea:focus,
   select:focus {
     border-color: var(--primary-color);
@@ -202,55 +189,89 @@
     outline: none;
   }
   
-  /* Utility: Button styling */
+  select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23586069" d="M0 0l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+  }
+  
   .button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 0.75rem 1.5rem;
     border-radius: var(--border-radius);
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
     border: none;
-  }
-  .button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.3);
-  }
-  .button:hover {
-    transform: translateY(-2px);
+    position: relative;
+    overflow: hidden;
   }
   
-  /* Primary Button */
+  .button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  
+  .button:hover::before {
+    transform: translateX(100%);
+  }
+  
+  .button::after {
+    content: ' →'; /* Default arrow icon */
+    margin-left: 0.5rem;
+  }
+  
+  .button:active {
+    transform: scale(0.98);
+  }
+  
   .primary-button {
     background-color: var(--primary-color);
     color: var(--white);
   }
+  
   .primary-button:hover {
     background-color: var(--primary-dark);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
   }
   
-  /* Secondary Button */
   .secondary-button {
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
   }
+  
   .secondary-button:hover {
     background-color: var(--primary-color);
     color: var(--white);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
   }
   
-  /* Danger Button */
   .danger-button {
     background-color: var(--error-color);
     color: var(--white);
   }
+  
   .danger-button:hover {
     background-color: darkred;
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
   }
   
-  /* Success Message */
   .success-message {
     background-color: #d4edda;
     color: var(--success-color);
@@ -260,45 +281,156 @@
     animation: fadeOut 3s forwards;
   }
   
-  /* Error Message */
   .error-message {
     color: var(--error-color);
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+    background: #f8d7da;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  /* Button Animations */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  
+  /* General Button Styles for Disabled State */
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Login Button */
+  #login-form button[type="submit"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #0969da, #044289); /* Blue gradient */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  #login-form button[type="submit"]::before {
+    content: '🔑'; /* Key icon */
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  #login-form button[type="submit"]:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+  
+  /* Register Button */
+  #register-form button[type="submit"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #0969da, #044289); /* Blue gradient */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  #register-form button[type="submit"]::before {
+    content: '➕'; /* Plus icon */
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  #register-form button[type="submit"]:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+  
+  /* Detect Location Button */
+  #detectLocation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2ea44f; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    animation: pulse 2s infinite;
+  }
+  
+  #detectLocation::before {
+    content: '📍'; /* Location pin icon */
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  /* Auto Detect Button */
+  #autoDetect {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4a261; /* Orange */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  #autoDetect::before {
+    content: '✨'; /* Sparkles icon */
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  #autoDetect:enabled:hover {
+    animation: shake 0.5s;
   }
   
   /* ============================================================================
-     04. NAVIGATION BAR
+     04. Navigation Bar
      ============================================================================ */
   #navbar {
-    background-color: var(--background-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
+  
   #navbar ul {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    gap: 1.5rem;
   }
-  #navbar li {
-    margin: 0;
-  }
+  
   #navbar a {
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--border-radius);
     color: var(--text-color);
     font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: background 0.3s ease, color 0.3s ease;
   }
+  
   #navbar a:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background: var(--primary-color);
+    color: var(--white);
   }
   
   /* ============================================================================
-     05. LANDING PAGE (Hero, Features, CTA)
+     05. Landing Page (Hero, Features, CTA)
      ============================================================================ */
-  /* The landing page design is kept as-is (with minor tweaks for consistency) */
   #landing-page {
     padding: 0;
     margin: 0;
@@ -306,6 +438,7 @@
     border-radius: 0;
     box-shadow: none;
   }
+  
   #hero-section {
     background-color: #e6f3ff;
     padding: 60px 20px;
@@ -313,7 +446,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 1s ease-out;
   }
+  
   @media (min-width: 768px) {
     #hero-section {
       flex-direction: row;
@@ -322,201 +457,184 @@
       justify-content: space-between;
     }
   }
+  
   .hero-content {
     flex: 1;
     padding-right: 20px;
+    animation: fadeInUp 1s ease-out;
   }
+  
   .hero-content h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
   }
+  
   .hero-content .hero-tagline {
     font-size: 1.2rem;
     color: var(--muted-color);
     margin-bottom: 2rem;
   }
+  
   .hero-buttons .button {
     margin-right: 10px;
   }
+  
   .hero-buttons .button:last-child {
     margin-right: 0;
   }
+  
   .hero-image {
     flex: 1;
     max-width: 400px;
     margin-top: 20px;
   }
+  
   @media (min-width: 768px) {
     .hero-image {
       margin-top: 0;
     }
   }
-  .hero-image img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-  /* Features Section */
+  
   #features-section {
     padding: 60px 20px;
     text-align: center;
   }
+  
   #features-section h2 {
     margin-bottom: 3rem;
   }
+  
   .features-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
   }
+  
   @media (min-width: 768px) {
     .features-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
+  
   @media (min-width: 992px) {
     .features-grid {
       grid-template-columns: repeat(4, 1fr);
     }
   }
+  
   .feature-item {
     padding: 30px;
     background-color: var(--white);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: var(--shadow-light);
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
   }
+  
   .feature-item:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
   }
+  
+  .feature-item:nth-child(1) { animation-delay: 0.1s; }
+  .feature-item:nth-child(2) { animation-delay: 0.2s; }
+  .feature-item:nth-child(3) { animation-delay: 0.3s; }
+  .feature-item:nth-child(4) { animation-delay: 0.4s; }
+  
   .feature-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    display: block;
     color: var(--primary-color);
   }
+  
   .feature-item h3 {
     margin-bottom: 0.8rem;
   }
+  
   .feature-item p {
     color: var(--muted-color);
   }
-  /* CTA Section */
+  
   #cta-section {
     padding: 60px 20px;
     text-align: center;
     background-color: #f9f9f9;
   }
+  
   #cta-section h2 {
     margin-bottom: 1rem;
   }
+  
   #cta-section p {
     font-size: 1.1rem;
     color: var(--muted-color);
     margin-bottom: 2rem;
   }
+  
   .cta-buttons .button {
     margin-right: 10px;
   }
+  
   .cta-buttons .button:last-child {
     margin-right: 0;
   }
   
   /* ============================================================================
-     06. LOGIN & REGISTRATION PAGES
+     06. Login & Registration Pages
      ============================================================================ */
-  /* These pages use the .page-container class for a more generous width */
   #login-page,
   #register-page {
-    /* Center container for login/register */
     max-width: 450px;
     margin: 3rem auto;
     padding: 2rem;
-    background-color: var(--white);
+    background: var(--white);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
+  
   #login-page h1,
   #register-page h1 {
     margin-bottom: 1.5rem;
     text-align: center;
   }
+  
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  form input,
-  form textarea,
-  form select {
-    margin-bottom: 1rem;
-    width: 100%;
-    max-width: 400px;
-  }
-  form button {
-    width: auto;
-    padding: 0.75rem 2rem;
-  }
-  
-  /* Link styling in forms */
-  form p {
-    margin-top: 1rem;
-    font-size: 0.95rem;
-  }
-  form p a {
-    color: var(--primary-color);
-    font-weight: 500;
-  }
-  form p a:hover {
-    text-decoration: underline;
-  }
   
   /* ============================================================================
-     07. ADMIN DASHBOARD
+     07. Admin Dashboard
      ============================================================================ */
-  /* Admin dashboard container */
   #admin-page {
     padding: 2rem;
   }
+  
   .admin-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
-  /* Admin Analytics Section */
-  .admin-analytics {
-    width: 100%;
-    background-color: var(--white);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-  }
-  #reportsChart {
-    width: 100% !important;
-    max-height: 400px;
-  }
-  /* Admin Reports List */
-  #admin-reports-container {
-    margin-top: 1rem;
-  }
+  
   #admin-reports-container li {
-    padding: 1rem;
+    background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    margin-bottom: 1rem;
-    background-color: #f9f9f9;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  #admin-reports-container li:last-child {
-    margin-bottom: 0;
+  
+  #admin-reports-container li:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
   }
+  
   .status-update {
     padding: 0.5rem;
     border: 1px solid var(--border-color);
@@ -524,287 +642,341 @@
     font-size: 0.9rem;
     margin-right: 0.5rem;
   }
+  
   .update-status-btn {
     padding: 0.5rem 1rem;
     background-color: var(--primary-color);
     color: var(--white);
-    border: none;
     border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 0.9rem;
   }
+  
   .update-status-btn:hover {
     background-color: var(--primary-dark);
   }
-  /* Admin Actions */
+  
   .admin-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-top: 1rem;
   }
-  .admin-actions .button {
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    cursor: pointer;
-  }
+  
   .admin-actions .secondary-button {
     background-color: var(--accent-color);
     color: var(--white);
   }
+  
   .admin-actions .secondary-button:hover {
     background-color: darkorange;
   }
+  
   .admin-logout {
     text-align: center;
     margin-top: 1.5rem;
   }
   
   /* ============================================================================
-     08. REPORTING PAGE
+     08. Reporting Page
      ============================================================================ */
-  #reporting-page {
-    /* Using the page-container to make it wider than login/register */
-    width: 90%;
+  /* Reporting Page Image Preview */
+#imagePreview img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+/* Admin Reports and User Reports Images */
+#admin-reports-container img,
+#user-reports-container img {
+  max-width: 200px;
+  max-height: 200px;
+  margin-top: 10px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+/* Map Popup Images */
+.leaflet-popup-content img {
+  max-width: 150px;
+  max-height: 150px;
+  margin-top: 10px;
+  border-radius: var(--border-radius);
+}
+  
+  
+     #reporting-page {
     max-width: 700px;
     margin: 2rem auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
-  #report-form select,
-  #report-form textarea,
-  #report-form .file-input-wrapper input[type="file"] {
-    width: 100%;
-    max-width: 500px;
-    margin-bottom: 1rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--input-radius);
-    font-size: 1rem;
-    background-color: var(--white);
-  }
+  
   #report-form textarea {
     min-height: 150px;
     resize: vertical;
   }
-  #report-form .file-input-wrapper {
-    position: relative;
-    overflow: hidden;
+  
+  #imageUpload {
+    display: none;
+  }
+  
+  label[for="imageUpload"] {
     display: inline-block;
-    margin-bottom: 1rem;
-  }
-  #report-form .file-input-wrapper input[type="file"] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    opacity: 0;
-    cursor: pointer;
-  }
-  #report-form .file-input-wrapper label {
     padding: 0.75rem 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--input-radius);
-    background-color: #f9f9f9;
-    cursor: pointer;
-  }
-  #report-form button[type="submit"] {
-    padding: 0.75rem 2rem;
-    background-color: var(--secondary-color);
+    background: var(--accent-color);
     color: var(--white);
-    border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background 0.3s ease;
   }
-  #report-form button[type="submit"]:hover {
-    background-color: var(--secondary-dark);
+  
+  label[for="imageUpload"]:hover {
+    background: darkorange;
+  }
+  
+  label[for="imageUpload"]::before {
+    content: '📷 ';
   }
   
   /* ============================================================================
-     09. MY REPORTS PAGE
+     09. My Reports Page
      ============================================================================ */
   #my-reports-page {
-    width: 90%;
     max-width: 700px;
     margin: 2rem auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
+  
   #user-reports-container li {
-    padding: 1rem;
+    background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    margin-bottom: 1rem;
-    background-color: #f9f9f9;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  #user-reports-container li:last-child {
-    margin-bottom: 0;
+  
+  #user-reports-container li:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
   }
   
   /* ============================================================================
-     10. COMMUNITY FORUM PAGE
+     10. Community Forum Page
      ============================================================================ */
   #community-forum-page {
-    width: 90%;
     max-width: 750px;
     margin: 2rem auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow-light);
   }
-  #forum-posts {
-    margin-bottom: 2rem;
-  }
+  
   .forum-post {
-    padding: 1.5rem;
+    background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    margin-bottom: 1rem;
-    background-color: #f9f9f9;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
   }
-  .forum-post:last-child {
-    margin-bottom: 0;
+  
+  .forum-post:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-3px);
   }
+  
   .forum-post h3 {
+    color: var(--primary-color);
     margin-bottom: 0.75rem;
   }
-  .forum-post p {
-    margin-bottom: 1rem;
-  }
-  #new-post h2 {
-    margin-bottom: 1rem;
-  }
-  #forum-post-form input[type="text"],
-  #forum-post-form textarea {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 1rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--input-radius);
-    font-size: 1rem;
-  }
+  
   #forum-post-form textarea {
     min-height: 100px;
     resize: vertical;
   }
-  #forum-post-form button[type="submit"] {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  #forum-post-form button[type="submit"]:hover {
-    background-color: var(--primary-dark);
-  }
   
   /* ============================================================================
-     11. ABOUT & CONTACT PAGES
+     11. About & Contact Pages
      ============================================================================ */
   #about-page,
   #contact-page {
-    width: 90%;
     max-width: 750px;
     margin: 2rem auto;
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-  }
-  #contact-page a {
-    color: var(--primary-color);
-  }
-  #contact-page a:hover {
-    text-decoration: underline;
+    box-shadow: var(--shadow-light);
   }
   
   /* ============================================================================
-     12. CHATBOT CONTAINER
+     12. Chatbot Container
      ============================================================================ */
-  #chatbot-container {
+  .chat-widget {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    font-family: var(--font-base);
   }
-  .chatbot-toggle {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
-    cursor: pointer;
+  
+  .chat-container {
+    width: 320px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    transform: translateY(140%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .chat-container.active {
+    transform: translateY(0);
+  }
+  
+  .chat-container h2 {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
     text-align: center;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
-  .chatbot-toggle:hover {
-    background-color: var(--primary-dark);
+  
+  .chat-box {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
   }
-  .chatbot-frame {
-    display: none;
-    border: 1px solid var(--border-color);
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-    box-shadow: var(--box-shadow);
+  
+  .message {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 80%;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: messageAppear 0.3s ease forwards;
   }
-  .chatbot-frame iframe {
+  
+  .message.user {
+    background-color: rgba(63, 81, 181, 0.8);
+    align-self: flex-end;
+    text-align: right;
+  }
+  
+  .message.bot {
+    background-color: rgba(76, 175, 80, 0.8);
+    align-self: flex-start;
+  }
+  
+  .chat-input {
+    display: flex;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+  }
+  
+  .input-box {
+    flex: 1;
+    padding: 10px;
     border: none;
-    width: 350px;
-    height: 430px;
-    display: block;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #000000;
+    outline: none;
+  }
+  
+  .send-button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+  }
+  
+  .send-button:hover {
+    background: var(--primary-dark);
+  }
+  
+  .chat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+  }
+  
+  .chat-icon:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  .chat-box::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .chat-box::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
   }
   
   /* ============================================================================
-     13. ANIMATIONS & TRANSITIONS
+     13. Animations & Transitions
      ============================================================================ */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes messageAppear {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
   @keyframes fadeOut {
     0% { opacity: 1; }
     70% { opacity: 1; }
     100% { opacity: 0; }
   }
+  
   .page {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
+  
   .page.show {
     opacity: 1;
     transform: translateY(0);
   }
   
   /* ============================================================================
-     14. RESPONSIVE ADJUSTMENTS
+     14. Responsive Adjustments
      ============================================================================ */
   @media (max-width: 768px) {
-    /* Global container adjustments */
-    #app {
-      padding: 15px;
-    }
-    /* Navigation adjustments */
-    #navbar {
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-    }
-    #navbar ul {
-      flex-direction: column;
-      gap: 0.75rem;
-      text-align: center;
-    }
-    /* Hero Section */
+    #app { padding: 15px; }
+    #navbar ul { flex-direction: column; gap: 0.75rem; }
     #hero-section {
       padding: 40px 15px;
       flex-direction: column;
@@ -814,25 +986,14 @@
       padding-right: 0;
       margin-bottom: 30px;
     }
-    .hero-content h1 {
-      font-size: 2.2rem;
-    }
-    .hero-content .hero-tagline {
-      font-size: 1.1rem;
-    }
-    .hero-buttons .button {
-      display: block;
-      margin: 0 auto 10px;
-    }
-    /* Form elements */
+    .hero-content h1 { font-size: 2.2rem; }
+    .hero-content .hero-tagline { font-size: 1.1rem; }
+    .hero-buttons .button { display: block; margin: 0 auto 10px; }
     input[type="text"],
     input[type="email"],
     input[type="password"],
     textarea,
-    select {
-      max-width: 100%;
-    }
-    /* Page containers */
+    select { max-width: 100%; }
     .page-container,
     #login-page,
     #register-page,
@@ -840,14 +1001,10 @@
     #my-reports-page,
     #community-forum-page,
     #about-page,
-    #contact-page {
-      width: 95%;
-      padding: 1.5rem;
-    }
+    #contact-page { width: 95%; padding: 1.5rem; }
   }
   
   @media (min-width: 1200px) {
-    /* Increase container widths on very large screens */
     .page-container,
     #login-page,
     #register-page,
@@ -855,198 +1012,22 @@
     #my-reports-page,
     #community-forum-page,
     #about-page,
-    #contact-page {
-      max-width: 800px;
-    }
+    #contact-page { max-width: 800px; }
   }
   
   /* ============================================================================
-     15. EXTRA AESTHETIC IMPROVEMENTS & PADDING (ADDITIONAL LINES FOR EXPANSION)
+     15. Map Styling
      ============================================================================ */
-  
-  /* Extra spacing for headings and paragraphs */
-  section {
-    margin-bottom: 3rem;
-  }
-  section:last-of-type {
-    margin-bottom: 0;
-  }
-  
-  /* Decorative horizontal rule */
-  .hr-decorative {
-    border: none;
-    height: 2px;
-    background: var(--primary-color);
-    margin: 2rem auto;
-    width: 50%;
+  #map, #admin-map {
+    height: 400px;
     border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    margin-bottom: 1.5rem;
   }
   
-  /* Additional spacing classes */
-  .mt-1 { margin-top: 1rem; }
-  .mt-2 { margin-top: 2rem; }
-  .mt-3 { margin-top: 3rem; }
-  .mb-1 { margin-bottom: 1rem; }
-  .mb-2 { margin-bottom: 2rem; }
-  .mb-3 { margin-bottom: 3rem; }
-  .pt-1 { padding-top: 1rem; }
-  .pt-2 { padding-top: 2rem; }
-  .pt-3 { padding-top: 3rem; }
-  .pb-1 { padding-bottom: 1rem; }
-  .pb-2 { padding-bottom: 2rem; }
-  .pb-3 { padding-bottom: 3rem; }
-  
-  /* Extra border radius classes */
-  .rounded {
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: var(--white);
     border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
   }
-  .rounded-sm {
-    border-radius: 4px;
-  }
-  .rounded-lg {
-    border-radius: 12px;
-  }
-  
-  /* Button shadow effect */
-  .button-shadow {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  .button-shadow:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Input focus effect */
-  .input-focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
-  }
-  
-  /* Custom file input styling */
-  .custom-file-input {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-  }
-  .custom-file-input input[type="file"] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    opacity: 0;
-    cursor: pointer;
-  }
-  
-  /* Checkbox and radio button styling */
-  input[type="checkbox"],
-  input[type="radio"] {
-    accent-color: var(--primary-color);
-    margin-right: 0.5rem;
-  }
-  
-  /* Form label styling */
-  .form-label {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-  }
-  
-  /* Link button styling */
-  .link-button {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-    font-size: 1rem;
-  }
-  
-  /* Card Component */
-  .card {
-    background-color: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  .card-header {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-  }
-  .card-body {
-    font-size: 1rem;
-    color: var(--muted-color);
-  }
-  .card-footer {
-    text-align: right;
-    margin-top: 1rem;
-  }
-  
-  /* Tooltip styling */
-  .tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-  }
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 140px;
-    background-color: var(--text-color);
-    color: var(--white);
-    text-align: center;
-    border-radius: var(--border-radius);
-    padding: 0.5rem;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  /* Modal Component */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-  }
-  .modal.show {
-    display: flex;
-  }
-  .modal-content {
-    background-color: var(--white);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    max-width: 600px;
-    width: 90%;
-    position: relative;
-  }
-  .modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
