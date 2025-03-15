@@ -13,7 +13,7 @@ from google.genai import types
 
 def generate(prompt):
     # Set your API key directly here
-    api_key = "API-KEY"  # Replace with your actual Gemini API key 
+    api_key = API-KEY  # Replace with your actual Gemini API key 
     client = genai.Client(api_key=api_key)
     model = "gemini-2.0-flash"
     
