@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="styles.css">
   <!-- Add Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add Leaflet CDN for maps -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
 </head>
 <body>
   <div id="app">
@@ -22,6 +25,7 @@
       </ul>
     </nav>
 
+    <!-- Landing Page -->
     <div id="landing-page" class="page show">
       <section id="hero-section">
         <div class="hero-content">
@@ -36,7 +40,6 @@
           <img src="https://png.pngtree.com/png-clipart/20240312/original/pngtree-smart-city-green-environmental-background-png-image_14570385.png" alt="Smart City Illustration">
         </div>
       </section>
-
       <section id="features-section">
         <h2>Key Features</h2>
         <div class="features-grid">
@@ -62,7 +65,6 @@
           </div>
         </div>
       </section>
-
       <section id="cta-section">
         <h2>Join SGResolve Today</h2>
         <p>Help us build a better Singapore. Report issues, track progress, and engage with your community.</p>
@@ -73,6 +75,7 @@
       </section>
     </div>
 
+    <!-- Login Page -->
     <div id="login-page" class="page" style="display: none;">
       <h1>Login</h1>
       <form id="login-form">
@@ -84,6 +87,8 @@
       <div id="login-error" class="error-message"></div>
     </div>
 
+    
+    <!-- Register Page -->
     <div id="register-page" class="page" style="display: none;">
       <h1>Register</h1>
       <form id="register-form">
@@ -96,266 +101,78 @@
       <div id="register-error" class="error-message"></div>
     </div>
 
-<!-- Updated Admin Dashboard -->
-<div id="admin-page" class="page" style="display: none;">
-  <h1>Admin Dashboard</h1>
-  <div class="admin-container">
-    <!-- Analytics Section -->
-    <div class="admin-analytics">
-      <h2>Reports Analytics</h2>
-      <canvas id="reportsChart"></canvas>
-      <button id="refresh-analytics" class="button">Refresh Analytics</button>
-    </div>
-
-    <!-- Reports List Section -->
-    <div class="admin-reports">
-      <h2>Submitted Reports</h2>
-      <div class="admin-actions">
-        <button id="refresh-reports" class="button">Refresh Reports</button>
-        <button id="export-data" class="button secondary-button">Export Data</button>
+    <!-- Admin Page -->
+    <div id="admin-page" class="page" style="display: none;">
+      <h1>Admin Dashboard</h1>
+      <div class="admin-container">
+        <div class="admin-reports">
+          <h2>Submitted Reports</h2>
+          <div id="admin-map" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
+          <div class="admin-actions">
+            <button id="refresh-reports" class="button">Refresh Reports</button>
+            <button id="export-data" class="button secondary-button">Export Data</button>
+          </div>
+          <ul id="admin-reports-container">
+            <!-- Report items rendered dynamically -->
+          </ul>
+        </div>
+        <div class="admin-logout">
+          <p><a href="#" id="logout-admin" class="button danger-button">Logout</a></p>
+        </div>
       </div>
-      <ul id="admin-reports-container">
-        <!-- The report items will be rendered dynamically from JavaScript -->
-      </ul>
     </div>
 
-    <!-- Logout Section -->
-    <div class="admin-logout">
-      <p><a href="#" id="logout-admin" class="button danger-button">Logout</a></p>
-    </div>
-  </div>
+<!-- Reporting Page with Auto Detect Button -->
+<div id="reporting-page" class="page" style="display: none;">
+  <h1>Report an Issue</h1>
+  <div id="map" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
+  <form id="report-form">
+    <input type="text" id="locationName" placeholder="Location Name" required>
+    <input type="number" id="latitude" step="any" placeholder="Latitude" required>
+    <input type="number" id="longitude" step="any" placeholder="Longitude" required>
+    <button type="button" id="detectLocation">Detect Location</button>
+    <textarea id="problemDesc" placeholder="Describe the issue..." required></textarea>
+    <button type="button" id="autoDetect" disabled>Auto Detect</button>
+    <select id="category" required>
+      <option value="">Select Category</option>
+      <option value="Infrastructure">Infrastructure</option>
+      <option value="Environmental">Environmental</option>
+      <option value="Safety">Safety</option>
+      <option value="Others">Others</option>
+    </select>
+    <select id="urgency" required>
+      <option value="">Select Urgency Level</option>
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <select id="threat" required>
+      <option value="">Select Threat Amount</option>
+      <option value="Minor">Minor</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Severe">Severe</option>
+    </select>
+    <label for="imageUpload">Upload Image (optional)</label>
+    <input type="file" id="imageUpload" accept="image/*">
+    <div id="imagePreview" style="margin-top: 10px;"></div> <!-- Added preview div -->
+    <button type="submit">Submit Report</button>
+  </form>
+  <div id="report-error" class="error-message"></div>
 </div>
 
-<!-- Inline JavaScript to simulate real-time report updates and persistence -->
-<script>
-// Wrap everything in DOMContentLoaded to ensure the DOM is ready
-document.addEventListener('DOMContentLoaded', function () {
-  // -------------------------------
-  // Data Persistence & Initialization
-  // -------------------------------
-  // Load persisted reports from localStorage if available; otherwise, use initial fake data.
-  let reports = [];
-  if (localStorage.getItem('reports')) {
-    reports = JSON.parse(localStorage.getItem('reports'));
-  } else {
-    reports = [
-      { id: 1001, description: 'Pothole on Main St', status: 'Pending' },
-      { id: 1002, description: 'Broken street light at 2nd Ave', status: 'In Progress' },
-      { id: 1003, description: 'Overflowing garbage bin on Elm St', status: 'Resolved' },
-      { id: 1004, description: 'Illegal dumping near Riverside Park', status: 'Pending' }
-    ];
-    localStorage.setItem('reports', JSON.stringify(reports));
-  }
-
-  // Helper function to persist the reports array to localStorage
-  function persistReports() {
-    localStorage.setItem('reports', JSON.stringify(reports));
-  }
-
-  // -------------------------------
-  // Chart.js Setup
-  // -------------------------------
-  let reportsChart;
-
-  // Returns an array with counts: [pending, inProgress, resolved]
-  function getReportCounts() {
-    const pending = reports.filter(r => r.status === 'Pending').length;
-    const inProgress = reports.filter(r => r.status === 'In Progress').length;
-    const resolved = reports.filter(r => r.status === 'Resolved').length;
-    return [pending, inProgress, resolved];
-  }
-
-  // Create the Chart.js bar chart
-  function createReportsChart() {
-    const ctx = document.getElementById('reportsChart').getContext('2d');
-    const [pending, inProgress, resolved] = getReportCounts();
-    reportsChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Pending', 'In Progress', 'Resolved'],
-        datasets: [{
-          label: 'Number of Reports',
-          data: [pending, inProgress, resolved],
-          backgroundColor: [
-            'rgba(255, 193, 7, 0.6)',    // Pending (yellow)
-            'rgba(23, 162, 184, 0.6)',   // In Progress (cyan)
-            'rgba(40, 167, 69, 0.6)'     // Resolved (green)
-          ],
-          borderColor: [
-            'rgba(255, 193, 7, 1)',
-            'rgba(23, 162, 184, 1)',
-            'rgba(40, 167, 69, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { stepSize: 1 }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: 'Reports by Status'
-          }
-        }
-      }
-    });
-  }
-
-  // Update the chart when the reports data changes
-  function updateReportsChart() {
-    const [pending, inProgress, resolved] = getReportCounts();
-    reportsChart.data.datasets[0].data = [pending, inProgress, resolved];
-    reportsChart.update();
-  }
-
-  // -------------------------------
-  // Update Admin Reports UI
-  // -------------------------------
-  // This function re-renders the reports list in the admin dashboard.
-  function updateAdminReportsUI() {
-    const container = document.getElementById('admin-reports-container');
-    container.innerHTML = ''; // Clear existing list
-    reports.forEach(report => {
-      // Create the list item element
-      const li = document.createElement('li');
-      li.className = 'report-item';
-      li.innerHTML = `
-        <p><strong>Report ID:</strong> <span class="report-id">${report.id}</span></p>
-        <p><strong>Description:</strong> ${report.description}</p>
-        <p><strong>Status:</strong> <span class="report-status">${report.status}</span></p>
-        <label for="status-dropdown-${report.id}">Update Status:</label>
-        <select id="status-dropdown-${report.id}" class="status-dropdown" data-report-id="${report.id}">
-          <option value="Pending" ${report.status === 'Pending' ? 'selected' : ''}>Pending</option>
-          <option value="In Progress" ${report.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-          <option value="Resolved" ${report.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
-        </select>
-      `;
-      container.appendChild(li);
-    });
-  }
-
-  // -------------------------------
-  // Simulate New Reports Every 30 Seconds
-  // -------------------------------
-  // Array of possible report descriptions (you can add more)
-  const possibleDescriptions = [
-    'Fallen tree blocking the road',
-    'Graffiti on public wall',
-    'Water leakage on 5th Street',
-    'Abandoned vehicle on highway',
-    'Damaged bench in park'
-  ];
-
-  // Simulate a new report arriving every 30 seconds
-  function simulateNewReport() {
-    // Generate a new report id (max id + 1)
-    const maxId = reports.reduce((max, report) => report.id > max ? report.id : max, 0);
-    const newId = maxId + 1;
-    // Pick a random description from the array
-    const randomDescription = possibleDescriptions[Math.floor(Math.random() * possibleDescriptions.length)];
-    // New reports always start with a "Pending" status
-    const newReport = { id: newId, description: randomDescription, status: 'Pending' };
-    // Add the new report to the reports array and persist it
-    reports.push(newReport);
-    persistReports();
-    // Update the UI and chart
-    updateAdminReportsUI();
-    updateReportsChart();
-    console.log(`New report added: ${newId} - ${randomDescription}`);
-  }
-  // Set the interval for simulating new reports (30 seconds = 30000 ms)
-  setInterval(simulateNewReport, 30000);
-
-  // -------------------------------
-  // Event Listeners for Buttons and Dropdowns
-  // -------------------------------
-  // "Refresh Analytics" button to manually update the chart
-  document.getElementById('refresh-analytics').addEventListener('click', function () {
-    updateReportsChart();
-    alert('Analytics refreshed!');
-  });
-
-  // "Refresh Reports" button to re-render the reports list and chart
-  document.getElementById('refresh-reports').addEventListener('click', function () {
-    alert('Reports refreshed!');
-    updateAdminReportsUI();
-    updateReportsChart();
-  });
-
-  // "Export Data" button (dummy implementation)
-  document.getElementById('export-data').addEventListener('click', function () {
-    alert('Exporting data...');
-    // You can implement CSV export functionality here.
-  });
-
-  // Delegate change event for status dropdowns to update report status
-  document.getElementById('admin-reports-container').addEventListener('change', function (e) {
-    if (e.target && e.target.classList.contains('status-dropdown')) {
-      const reportId = parseInt(e.target.getAttribute('data-report-id'));
-      const newStatus = e.target.value;
-      const report = reports.find(r => r.id === reportId);
-      if (report) {
-        report.status = newStatus;
-        persistReports();
-        updateAdminReportsUI();
-        updateReportsChart();
-      }
-    }
-  });
-
-  // -------------------------------
-  // Initialize the Dashboard
-  // -------------------------------
-  createReportsChart();
-  updateAdminReportsUI();
-});
-</script>
-
-
-    <div id="reporting-page" class="page" style="display: none;">
-      <h1>Report an Issue</h1>
-      <form id="report-form">
-        <select id="issue-type" required>
-          <option value="">Select Issue Type</option>
-          <option value="pothole">Pothole</option>
-          <option value="illegal-dumping">Illegal Dumping</option>
-          <option value="street-light-outage">Street Light Outage</option>
-          <option value="others">Others</option>
-        </select>
-        <textarea id="issue-description" placeholder="Describe the issue..." required></textarea>
-        
-        <div class="file-input-wrapper">
-          <input type="file" id="issue-image" accept="image/*" required>
-          <label for="issue-image">Choose Image</label>
-        </div>
-        
-        <div class="location-input-wrapper">
-          <input type="text" id="issue-location" placeholder="Enter location or use current location" required>
-          <button type="button" id="get-location-btn">Use Current Location</button>
-        </div>
-        
-        <button type="submit">Submit Report</button>
-      </form>
-      <div id="report-error" class="error-message"></div>
-    </div>
-
+    <!-- My Reports Page -->
     <div id="my-reports-page" class="page" style="display: none;">
       <h1>My Reports</h1>
       <ul id="user-reports-container">
-        <!-- User reports will be rendered dynamically here -->
+        <!-- User reports rendered dynamically -->
       </ul>
     </div>
 
+    <!-- Community Forum Page -->
     <div id="community-forum-page" class="page" style="display: none;">
       <h1>Community Forum</h1>
       <div id="forum-posts">
-        <!-- Forum posts will be dynamically loaded here -->
+        <!-- Forum posts loaded dynamically -->
       </div>
       <div id="new-post">
         <h2>Create a New Post</h2>
@@ -367,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     </div>
 
+    <!-- About Page -->
     <div id="about-page" class="page" style="display: none;">
       <h1>About SGResolve</h1>
       <p>
@@ -379,32 +197,37 @@ document.addEventListener('DOMContentLoaded', function () {
       </p>
     </div>
 
+    <!-- Contact Page -->
     <div id="contact-page" class="page" style="display: none;">
       <h1>Contact Us</h1>
       <p>
         If you have any questions or need support, please contact us at
-        <a href="mailto:support@sgresolve.com">support@sgresolve.com</a>.
+        <a href="/cdn-cgi/l/email-protection#b0c3c5c0c0dfc2c4f0c3d7c2d5c3dfdcc6d59ed3dfdd"><span class="__cf_email__" data-cfemail="2a595f5a5a45585e6a594d584f5945465c4f04494547">[email&#160;protected]</span></a>.
       </p>
       <p>
         You can also reach us via our social media channels or visit our office at 123 Smart City Ave, Singapore.
       </p>
     </div>
 
-    <div id="chatbot-container">
-      <div class="chatbot-toggle">Chat Support</div>
-      <div class="chatbot-frame">
-        <iframe
-          allow="microphone;"
-          width="350"
-          height="430"
-          src="https://console.dialogflow.com/api-client/demo/embedded/03321d05-4dc4-4696-8db6-2e05b1df6698">
-        </iframe>
+    <!-- Custom Chatbot -->
+    <div class="chat-widget">
+      <div id="chat-container" class="chat-container">
+        <h2>SGResolve AI Chatbot</h2>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="chat-input">
+          <input type="text" id="user-input" class="input-box" placeholder="Type a message...">
+          <button class="send-button" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+      <div id="chat-icon" class="chat-icon" onclick="toggleChat()">
+        <img src="chat-icon.png" alt="Chat">
       </div>
     </div>
 
   </div>
 
-  <!-- External JavaScript file handling page interactions and status updates -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script src="script.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
