@@ -573,7 +573,7 @@ async function sendMessage() {
     if (!userInput) return;
     const chatBox = document.getElementById("chat-box");
     chatBox.innerHTML += `<div class="message user"><strong>You:</strong> ${userInput}</div>`;
-    const response = await fetch("https://test-server-naisc-production.up.railway.app/", {
+    const response = await fetch("https://test-server-naisc-production.up.railway.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userInput })
