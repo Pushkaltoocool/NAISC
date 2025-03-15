@@ -3,6 +3,7 @@ import base64
 from google import genai
 from google.genai import types
 from flask_cors import CORS
+import os  # Import the os module to access environment variables
 
 app = Flask(__name__)
 CORS(app)  # Enable Cross-Origin Requests
@@ -12,8 +13,10 @@ from google import genai
 from google.genai import types
 
 def generate(prompt):
-    # Set your API key directly here
-    api_key = API-KEY  # Replace with your actual Gemini API key 
+    api_key = os.getenv("API_KEY")  # Fetch API key from environment
+    if not api_key:
+        return "Error: Missing API Key"
+
     client = genai.Client(api_key=api_key)
     model = "gemini-2.0-flash"
     
